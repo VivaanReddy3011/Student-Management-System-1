@@ -7,6 +7,7 @@ function App()
   const [year,setY]=useState("");
 
   const [message,setM]=useState("");
+
   async function registerS()
   {
     const response=await fetch("http://localhost:3000/api/register",{
@@ -27,6 +28,26 @@ function App()
       setM(data.message);
   }
 
+  async function updateS()
+  {
+    const response=await fetch(`http://localhost:3000/api/students/${editing}`,{
+      method:"PUT",
+      headers:
+      {
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({name,branch,year,})
+  })
+    const data=await response.json();
+
+    if (response.ok){
+      setN(""); setB(""); setY("");
+      setEId(null);
+    }
+      setM(data.message);
+      fetchS();
+  }
+
   async function delS(id)
   {
     const response=await fetch(`http://localhost:3000/api/students/${id}`,{
@@ -37,6 +58,15 @@ function App()
       fetchS();
     }
       setM(data.message);
+  }
+
+  const [editing, setEId] = useState(null);
+  function startE(student)
+  {
+    setN(student.name);
+    setB(student.branch);
+    setY(student.year);
+    setEId(student.id)
   }
 
   const [student,setS]=useState([]);
@@ -65,9 +95,12 @@ function App()
 
       <input type="number" placeholder="Year"
       value={year} onChange={(e)=>{setY(e.target.value);}}/>
-      <button onClick={registerS}>
-            Register Student</button>
-      <p>{message}</p>
+
+    <button onClick={editing?updateS:registerS}>
+    {editing?"Update Student":"Register Student"}
+    </button>
+
+    <p>{message}</p>
 
     <table>
       <thead>
@@ -90,7 +123,7 @@ function App()
             <td>{stud.branch}</td>
             <td>{stud.year}</td>
             <td>
-              <button>Edit</button>
+              <button onClick={()=>startE(stud)}>Edit</button>
             </td>
             <td>
               <button onClick={()=>delS(stud.id)}>Delete</button>

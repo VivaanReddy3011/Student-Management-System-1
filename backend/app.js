@@ -47,10 +47,18 @@ app.put("/api/students/:id",(req,res)=>{
     if(index===-1) {
         return res.status(404).json({
             message: "Student not found."
+        });}
+
+        const stud=students[index];
+        stud.name=name;
+        stud.branch=branch;
+        stud.year=year;
+
+        return res.status(200).json({
+            message: "Student Details Updated."
         });
 
-
-    }});
+    });
 
 app.delete("/api/students/:id",(req,res)=>{
     const id=Number(req.params.id);
