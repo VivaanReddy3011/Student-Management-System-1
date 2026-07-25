@@ -2,17 +2,67 @@ import express from "express";
 import cors from "cors";
 
 const app=express();
-let nextI=1;
 
 app.use(cors({origin:"http://localhost:5173",}));
 app.use(express.json());
 
 const students=[];
+const accounts=[];
 const PORT=3000;
+let nextI=1;
+
+
+app.post("/api/loginUser",(req,res)=>{
+    const {username,password}=req.body
+    
+    if(!username||!password)
+    {
+        return res.status(400).json({
+            message:"All fields are required."
+        });
+    }
+
+    const index=accounts.findIndex((ind)=>ind.username===username)
+
+    if(index===-1 || password!=accounts[index])
+    {
+        return res.status(400).json({
+            message:"Incorrect Username or Password ."
+        });
+    }
+
+    res.status(201).json({
+        message:"Login Successful",
+    });
+});
+
+app.post("/api/registerUser",(req,res)=>{
+    const {email,username,password}=req.body
+ 
+    if(!email||!username||!password)
+    {
+        return res.status(400).json({
+            message:"All fields are required."
+        });
+    }
+
+    const index=accounts.findIndex((ind)=>ind.email===email);
+    if(index!==-1)
+    {
+        return res.status(400).json({
+            message:"Account already exist."
+        });
+    }
+
+    accounts.push({email,username,password});
+    res.status(201).json({
+        message:"Registered Successfully",
+    });
+});
 
 app.post("/api/register",(req,res)=>{
     const {name,branch,year}=req.body
-
+ 
     if(!name||!branch||!year)
     {
         return res.status(400).json({
@@ -20,9 +70,7 @@ app.post("/api/register",(req,res)=>{
         });
     }
 
-    console.log({name,branch,year})
     students.push({id:nextI++,name,branch,year})
-
     res.status(201).json({
         message:"Student registered successfully",
     });
