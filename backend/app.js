@@ -13,33 +13,33 @@ let nextI=1;
 
 
 app.post("/api/loginUser",(req,res)=>{
-    const {username,password}=req.body
-    
-    if(!username||!password)
+    const {user,pass}=req.body;
+
+    if(!user||!pass)
     {
         return res.status(400).json({
             message:"All fields are required."
         });
     }
 
-    const index=accounts.findIndex((ind)=>ind.username===username)
+    const index=accounts.findIndex((ind)=>ind.user===user)
 
-    if(index===-1 || password!=accounts[index])
+    if(index===-1 || pass!==accounts[index].pass)
     {
         return res.status(400).json({
             message:"Incorrect Username or Password ."
         });
     }
 
-    res.status(201).json({
+    res.status(200).json({
         message:"Login Successful",
     });
 });
 
 app.post("/api/registerUser",(req,res)=>{
-    const {email,username,password}=req.body
+    const {email,user,pass}=req.body
  
-    if(!email||!username||!password)
+    if(!email||!user||!pass)
     {
         return res.status(400).json({
             message:"All fields are required."
@@ -54,11 +54,16 @@ app.post("/api/registerUser",(req,res)=>{
         });
     }
 
-    accounts.push({email,username,password});
-    res.status(201).json({
+    accounts.push({email,user,pass});
+    res.status(200).json({
         message:"Registered Successfully",
     });
 });
+
+app.get("/api/accounts",(req,res)=>{
+    return res.json(accounts);
+})
+
 
 app.post("/api/register",(req,res)=>{
     const {name,branch,year}=req.body

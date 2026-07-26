@@ -5,10 +5,12 @@ import Login from './Login.jsx'
 function App()
 {
   const [log,setL]=useState(false);
+  const [ad,setA]=useState(false);
+  
 
   return(
     <>
-      {(log)?<Logged setLog={setL}/>:<Login setLog={setL}/>}
+      {(log)?<Logged setLog={setL}/>:<Login setLog={setL}setAd={setA}/>}
     </>  
   )
 }
