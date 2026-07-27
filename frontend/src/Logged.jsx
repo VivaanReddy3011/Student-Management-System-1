@@ -13,7 +13,7 @@ function Logged({setLog})
   //Create
   async function registerS()
   {
-    const response=await fetch("http://localhost:3000/api/register",{
+    const response=await fetch("http://localhost:3000/api/students",{
       method:"POST",
       headers:
       {
@@ -87,8 +87,6 @@ function Logged({setLog})
     setEId(student.id)
   }
 
-  
-  
   return(
     <>
     <div>

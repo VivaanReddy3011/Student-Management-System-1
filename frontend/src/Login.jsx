@@ -1,7 +1,7 @@
 import {useEffect,useState} from "react";
 export default Login;
 
-function Login({setLog,setAd})
+function Login({setLog})
 {   
     const [choice,setC]=useState(true);
 
@@ -10,9 +10,11 @@ function Login({setLog,setAd})
     const [pass,setP]=useState("");
     
     const [message,setM]=useState("");//Operation Message
+
+    //Login Check
     async function Check1()
     {
-        const response= await fetch("http://localhost:3000/api/loginUser",{
+        const response= await fetch("http://localhost:3000/api/auth/login",{
             method:"POST",
             headers:
             {
@@ -28,9 +30,10 @@ function Login({setLog,setAd})
         setM(data.message);
     }
 
+    //Registration Check
     async function Check2()
     {
-        const response= await fetch("http://localhost:3000/api/registerUser",{
+        const response= await fetch("http://localhost:3000/api/auth/register",{
             method:"POST",
             headers:
             {
@@ -46,25 +49,26 @@ function Login({setLog,setAd})
         setM(data.message);
     }
     
-    return (
+    //Taking Inputs
+    return(
     <>
         <div>
             {choice?(<>
                     <p>Username</p>
-                    <input placeholder="John Doe" type="text" onChange={(e)=>(setU(e.target.value))}/>
+                    <input placeholder="John Doe" type="text" value={user} onChange={(e)=>(setU(e.target.value))}/>
                     <p>Password</p>
-                    <input placeholder="enter your password" type="text" onChange={(e)=>(setP(e.target.value))}/>
+                    <input placeholder="enter your password" type="text" value={pass} onChange={(e)=>(setP(e.target.value))}/>
                     <button onClick={Check1}>Login</button> 
                     <p>Don't Have a Account?</p>
                     <button onClick={()=>setC(false)}>Register</button>
                     </>)
                     :(<>
                     <p>Email</p>
-                    <input placeholder="Enter Email" type="text" onChange={(e)=>(setE(e.target.value))}/>
+                    <input placeholder="Enter Email" type="text" value={email} onChange={(e)=>(setE(e.target.value))}/>
                     <p>Username</p>
-                    <input placeholder="John Doe" type="text" onChange={(e)=>(setU(e.target.value))}/>
+                    <input placeholder="John Doe" type="text" value={user} onChange={(e)=>(setU(e.target.value))}/>
                     <p>Password</p>
-                    <input placeholder="enter password" type="text" onChange={(e)=>(setP(e.target.value))}/>
+                    <input placeholder="enter password" type="text" value={pass} onChange={(e)=>(setP(e.target.value))}/>
                     <button  onClick={Check2}>Register</button>
                     <p>Already have a Account?</p>
                     <button onClick={()=>setC(true)}>Login</button>
