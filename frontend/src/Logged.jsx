@@ -78,6 +78,7 @@ function Logged({setLog})
       setM(data.message);
   }
 
+  //Switch Operation
   const [editing, setEId] = useState(null);
   function startE(student)
   {
@@ -89,26 +90,34 @@ function Logged({setLog})
 
   return(
     <>
-    <div>
-      <div>
-      <h1>student management system</h1><button onClick={()=>setLog(false)}>Logout</button>
-      <input type="text" placeholder="Name"
+    <div className="dashboard">
+      <header className="header">
+      <h1>student management system</h1>
+      <button className="logout-btn" onClick={()=>setLog(false)}>Logout</button>
+      </header>
+
+      <div className="content">
+        <div className="form-card">
+        <h2>Register Student</h2>
+      <input className="input-field" type="text" placeholder="Name"
       value={name} onChange={(e)=>{setN(e.target.value);}}/>
 
-      <input type="text" placeholder="Branch"
+      <input className="input-field" type="text" placeholder="Branch"
       value={branch} onChange={(e)=>{setB(e.target.value);}}/>
 
-      <input type="number" placeholder="Year"
+      <input className="input-field" type="number" placeholder="Year"
       value={year} onChange={(e)=>{setY(e.target.value);}}/>
 
-      <button onClick={editing?updateS:registerS}>
+      <button className="primary-btn" onClick={editing?updateS:registerS}>
       {editing?"Update Student":"Register Student"}
       </button>
-      </div>
-
-    <p>{message}</p>
-
-      <table>
+      
+    <p className="message">{message}</p>
+    </div>
+    
+    <div className="table-card">
+      <h2>Students</h2>
+      <table className="student-table">
       <thead>
         <tr>
           <th>S.No</th>
@@ -116,6 +125,7 @@ function Logged({setLog})
           <th>Name</th>
           <th>Branch</th>
           <th>Year</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -129,17 +139,17 @@ function Logged({setLog})
             <td>{stud.branch}</td>
             <td>{stud.year}</td>
             <td>
-              <button onClick={()=>startE(stud)}>Edit</button>
-            </td>
-            <td>
-              <button onClick={()=>delS(stud.id)}>Delete</button>
+              <button className="edit-btn" onClick={()=>startE(stud)}>Edit</button>
+              <button className="delete-btn" onClick={()=>delS(stud.id)}>Delete</button>
             </td>
             </tr>);
           })
       }
       </tbody>
       </table>
-    </div>
+            </div>
+          </div>
+        </div>
     </>    
   )
 }

@@ -1,5 +1,5 @@
 import {useEffect,useState} from "react";
-export default Login;
+
 
 function Login({setLog})
 {   
@@ -52,29 +52,36 @@ function Login({setLog})
     //Taking Inputs
     return(
     <>
-        <div>
+         
+        <div className="login-container">
+        <div className="login-card">
+        <h1>Student Management System</h1>
+        <h2>{choice ? "Login" : "Register"}</h2>
             {choice?(<>
-                    <p>Username</p>
-                    <input placeholder="John Doe" type="text" value={user} onChange={(e)=>(setU(e.target.value))}/>
-                    <p>Password</p>
-                    <input placeholder="enter your password" type="text" value={pass} onChange={(e)=>(setP(e.target.value))}/>
-                    <button onClick={Check1}>Login</button> 
+                    <label>Username</label>
+                    <input className="input-field" placeholder="John Doe" type="text" value={user} onChange={(e)=>(setU(e.target.value))}/>
+                    <label>Password</label>
+                    <input className="input-field" placeholder="enter your password" type="text" value={pass} onChange={(e)=>(setP(e.target.value))}/>
+                    <button className="primary-btn" onClick={Check1}>Login</button> 
                     <p>Don't Have a Account?</p>
-                    <button onClick={()=>setC(false)}>Register</button>
+                    <button className="link-btn" onClick={()=>setC(false)}>Register</button>
                     </>)
                     :(<>
-                    <p>Email</p>
-                    <input placeholder="Enter Email" type="text" value={email} onChange={(e)=>(setE(e.target.value))}/>
-                    <p>Username</p>
-                    <input placeholder="John Doe" type="text" value={user} onChange={(e)=>(setU(e.target.value))}/>
-                    <p>Password</p>
-                    <input placeholder="enter password" type="text" value={pass} onChange={(e)=>(setP(e.target.value))}/>
-                    <button  onClick={Check2}>Register</button>
+                    <label>Email</label>
+                    <input className="input-field" placeholder="Enter Email" type="text" value={email} onChange={(e)=>(setE(e.target.value))}/>
+                    <label>Username</label>
+                    <input className="input-field" placeholder="John Doe" type="text" value={user} onChange={(e)=>(setU(e.target.value))}/>
+                    <label>Password</label>
+                    <input className="input-field" placeholder="enter password" type="text" value={pass} onChange={(e)=>(setP(e.target.value))}/>
+                    <button className="primary-btn" onClick={Check2}>Register</button>
                     <p>Already have a Account?</p>
-                    <button onClick={()=>setC(true)}>Login</button>
+                    <button className="link-btn" onClick={()=>setC(true)}>Login</button>
                     </>)}
-                <p>{message}</p>
+                <p className="message">{message}</p>
+        </div>
         </div>
     </>
     );
 }
+
+export default Login;
