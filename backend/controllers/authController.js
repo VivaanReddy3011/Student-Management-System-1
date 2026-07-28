@@ -18,8 +18,7 @@ export function addA(req, res) {
     const account = addAccount(req.body);
 
     res.status(201).json({
-        message: "Account created successfully.",
-        account
+        message: "Account created successfully."
     });
 }
 

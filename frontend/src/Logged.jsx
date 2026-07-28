@@ -88,6 +88,15 @@ function Logged({setLog})
     setEId(student.id)
   }
 
+  function cancelE()
+  {
+    setN("");
+    setB("");
+    setY("");
+    setEId(null);
+  }
+
+
   return(
     <>
     <div className="dashboard">
@@ -97,8 +106,8 @@ function Logged({setLog})
       </header>
 
       <div className="content">
-        <div className="form-card">
-        <h2>Register Student</h2>
+      <div className="form-card">
+      <h2>Register Student</h2>
       <input className="input-field" type="text" placeholder="Name"
       value={name} onChange={(e)=>{setN(e.target.value);}}/>
 
@@ -139,7 +148,7 @@ function Logged({setLog})
             <td>{stud.branch}</td>
             <td>{stud.year}</td>
             <td>
-              <button className="edit-btn" onClick={()=>startE(stud)}>Edit</button>
+              <button className="edit-btn" onClick={()=>editing?cancelE():startE(stud)}>{editing?"Cancel":"Edit"}</button>
               <button className="delete-btn" onClick={()=>delS(stud.id)}>Delete</button>
             </td>
             </tr>);
