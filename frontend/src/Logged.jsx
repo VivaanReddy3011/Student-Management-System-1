@@ -1,5 +1,7 @@
 import {useEffect,useState} from "react";
 
+const API_BASE_URL = "http://localhost:3000";
+
 function Logged({setLog})
 {
   const [name,setN]=useState("");//Parameter 1
@@ -13,7 +15,7 @@ function Logged({setLog})
   //Create
   async function registerS()
   {
-    const response=await fetch("http://localhost:3000/api/students",{
+    const response=await fetch(`${API_BASE_URL}/api/students`,{
       method:"POST",
       headers:
       {
@@ -34,7 +36,7 @@ function Logged({setLog})
   //Read
   async function fetchS()
   {
-    const response=await fetch("http://localhost:3000/api/students");
+    const response=await fetch(`${API_BASE_URL}/api/students`);
 
     const data=await response.json();
     setS(data);
@@ -47,7 +49,7 @@ function Logged({setLog})
   //Update
   async function updateS()
   {
-    const response=await fetch(`http://localhost:3000/api/students/${editing}`,{
+    const response=await fetch(`${API_BASE_URL}/api/students/${editing}`,{
       method:"PUT",
       headers:
       {
@@ -68,7 +70,7 @@ function Logged({setLog})
   //Delete
   async function delS(id)
   {
-    const response=await fetch(`http://localhost:3000/api/students/${id}`,{
+    const response=await fetch(`${API_BASE_URL}/api/students/${id}`,{
       method:"DELETE"
     });
     const data=await response.json();

@@ -1,5 +1,7 @@
 import {useEffect,useState} from "react";
 
+const API_BASE_URL = "http://localhost:3000";
+
 function Login({setLog})
 {   
     const [choice,setC]=useState(true);
@@ -13,7 +15,7 @@ function Login({setLog})
     //Login Check
     async function Check1()
     {
-        const response= await fetch("http://localhost:3000/api/auth/login",{
+        const response= await fetch(`${API_BASE_URL}/api/auth/login`,{
             method:"POST",
             headers:
             {
@@ -32,7 +34,7 @@ function Login({setLog})
     //Registration Check
     async function Check2()
     {
-        const response= await fetch("http://localhost:3000/api/auth/register",{
+        const response= await fetch(`${API_BASE_URL}/api/auth/register`,{
             method:"POST",
             headers:
             {
@@ -50,6 +52,22 @@ function Login({setLog})
         }
         setM(data.message);
     }
+
+    function switchToLogin() {
+        setC(true);
+        setE("");
+        setU("");
+        setP("");
+        setM("");
+    }
+
+    function switchToRegister() {
+        setC(false);
+        setE("");
+        setU("");
+        setP("");
+        setM("");
+    }
     
     //Taking Inputs
     return(
@@ -65,7 +83,7 @@ function Login({setLog})
                     <input className="input-field" placeholder="enter your password" type="password" value={pass} onChange={(e)=>(setP(e.target.value))}/>
                     <button className="primary-btn" onClick={Check1}>Login</button> 
                     <p>Don't Have a Account?</p>
-                    <button className="link-btn" onClick={()=>setC(false)}>Register</button>
+                    <button className="link-btn" onClick={()=>switchToRegister()}>Register</button>
                     </>)
                     :(<>
                     <label>Email</label>
@@ -76,9 +94,9 @@ function Login({setLog})
                     <input className="input-field" placeholder="enter password" type="password" value={pass} onChange={(e)=>(setP(e.target.value))}/>
                     <button className="primary-btn" onClick={Check2}>Register</button>
                     <p>Already have a Account?</p>
-                    <button className="link-btn" onClick={()=>setC(true)}>Login</button>
+                    <button className="link-btn" onClick={()=>switchToLogin()}>Login</button>
                     </>)}
-                <p className="message">{message}</p>
+                {message && <p className="message">{message}</p>}
         </div>
         </div>
     </>
