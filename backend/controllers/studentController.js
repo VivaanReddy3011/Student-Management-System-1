@@ -1,42 +1,56 @@
-import {
-    getAllStudents,
-    addStudent,
-    updateStudentById,
-    deleteStudentById
-} from "../data/students.js";
+
+import Student from "../models/student.js";
 
 // GET /api/students
-export function getStudents(req, res) {
-    res.status(200).json(getAllStudents());
+export async function getStudents(req, res) 
+{
+    try 
+    {
+        const students = await Student.find();
+        res.status(200).json(students);
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        });
+    }
 }
 
 // POST /api/students
-export function registerStudent(req, res) {
-    const {name,branch,year}=req.body;
+export async function registerStudent(req, res){
+    try
+    {
+        const {name,branch,year}=req.body;
 
-    if(!name||!branch||!year) {
-        return res.status(400).json({
-            message: "All fields are required."
+        if(!name||!branch||!year){
+            return res.status(400).json({
+                message: "All fields are required."
+            });
+        }
+
+        const student=await Student.create({
+            name,
+            branch,
+            year
+        });
+
+        res.status(201).json({
+            message:"Student registered successfully.",
+            student
+        });
+    }   catch(error)
+    {
+        res.status(500).json({
+            message:error.message
         });
     }
-
-    const student=addStudent(req.body);
-
-    res.status(201).json({
-        message:"Student registered successfully."
-    });
 }
 
 // PUT /api/students/:id
-export function updateStudent(req, res){
-    const id=Number(req.params.id);
+export async function updateStudent(req,res){
+    try
+    {
+    const {id}=req.params;
     const {name,branch,year}=req.body;
-
-    if(Number.isNaN(id)){
-        return res.status(400).json({
-            message: "Invalid student ID."
-        });
-    }
 
     if(!name||!branch||!year){
         return res.status(400).json({
@@ -44,32 +58,55 @@ export function updateStudent(req, res){
         });
     }
 
-    const updatedStudent=updateStudentById(id,req.body);
+    const updatedStudent = await Student.findByIdAndUpdate(
+        id,
+        {
+            name,
+            branch,
+            year
+        },
+        {
+            new: true,
+            runValidators: true
+        }
+    );
 
-    if (!updatedStudent){
+    if(!updatedStudent){
         return res.status(404).json({
             message: "Student not found."
         });
     }
 
-    res.status(200).json({
-        message: "Student updated successfully."
-    });
+        res.status(200).json({
+            message: "Student updated successfully."
+        });
+
+    }catch(error){
+        if(error.name==="ValidationError")
+        {
+            return res.status(400).json({
+                message:error.message
+            });
+        }
+        if (error.name === "CastError") {
+            return res.status(400).json({
+                message: "Invalid student ID."
+            });
+        }
+        res.status(500).json({
+            message:error.message
+        });
+    }
 }
 
 // DELETE /api/students/:id
-export function deleteStudent(req, res){
-    const id = Number(req.params.id);
+export async function deleteStudent(req, res){
+    try{
+    const {id} = req.params;
 
-    if (Number.isNaN(id)) {
-        return res.status(400).json({
-            message: "Invalid student ID."
-        });
-    }
+    const deletedStudent =await Student.findByIdAndDelete(id);
 
-    const deleted=deleteStudentById(id);
-
-    if (!deleted){
+    if (!deletedStudent){
         return res.status(404).json({
             message: "Student not found."
         });
@@ -78,4 +115,11 @@ export function deleteStudent(req, res){
     res.status(200).json({
         message: "Student deleted successfully."
     });
+    }
+    catch(error)
+    {
+        res.status(500).json({
+            message:error.message
+        });
+    }
 }

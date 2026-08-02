@@ -87,7 +87,7 @@ function Logged({setLog})
     setN(student.name);
     setB(student.branch);
     setY(student.year);
-    setEId(student.id)
+    setEId(student._id)
   }
 
   function cancelE()
@@ -143,15 +143,15 @@ function Logged({setLog})
       { 
       student.map((stud,index)=>{
         return(
-            <tr key={stud.id}>
+            <tr key={stud._id}>
             <td>{index + 1}</td>  
-            <td>{stud.id}</td>
+            <td>{stud._id}</td>
             <td>{stud.name}</td>
             <td>{stud.branch}</td>
             <td>{stud.year}</td>
             <td>
               <button className="edit-btn" onClick={()=>editing?cancelE():startE(stud)}>{editing?"Cancel":"Edit"}</button>
-              <button className="delete-btn" onClick={()=>delS(stud.id)}>Delete</button>
+              <button className="delete-btn" onClick={()=>delS(stud._id)}>Delete</button>
             </td>
             </tr>);
           })

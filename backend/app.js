@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import connectDB from "./config/db.js";
 
 import studentRoutes from "./routes/studentRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -18,6 +19,13 @@ app.use("/api/auth", authRoutes);
 
 const PORT = 3000;
 
-app.listen(PORT, () => {
+async function start()
+{
+    await connectDB();
+
+    app.listen(PORT,()=>{
     console.log(`Server running on port ${PORT}`);
-});
+    });
+}
+
+start();
