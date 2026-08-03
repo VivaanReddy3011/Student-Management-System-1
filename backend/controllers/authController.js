@@ -1,51 +1,92 @@
-import {addAccount,checkLogin,findAccountByEmail,getA} from "../data/accounts.js";
+import Account from "../models/account.js";
 
-export function addA(req, res) {
-    const {email,user,pass} = req.body;
+export async function addA(req,res)
+{
+    try
+    {
+    const {email,pass}=req.body;
 
-    if (!email || !user || !pass) {
+    if (!email || !pass) {
         return res.status(400).json({
             message: "All fields are required."
         });
     }
 
-    if (findAccountByEmail(email)) {
+    const existingA = await Account.findOne({email});
+
+    if(existingA){
         return res.status(409).json({
             message: "An account with this email already exists."
         });
     }
 
-    const account = addAccount(req.body);
+    const account = await Account.create({
+        email,
+        pass
+    });
 
     res.status(201).json({
         message: "Account created successfully."
-    });
+        });
+    }
+    catch(error)
+    {
+        if(error.name === "ValidationError") 
+            {
+                return res.status(400).json({
+                    message: error.message
+                });
+            }
+            
+        res.status(500).json({
+            message:error.message
+        });
+    }
 }
 
-export function checkL(req,res) {
-    const {user,pass}=req.body;
+export async function checkL(req,res){
+    try
+    {
+    const {email,pass}=req.body;
 
-    if(!user||!pass){
+    if(!email||!pass){
         return res.status(400).json({
-            message: "username or password are required."
+            message: "email or password are required."
         });
     }
 
-    const account=checkLogin(user,pass);
+    const account= await Account.findOne({email,pass});
 
     if(!account){
         return res.status(401).json({
-            message: "Invalid username or password."
+            message: "Invalid email or password."
         });
     }
 
-    res.status(200).json({
-        message: "Login successful.",
-        account
-    });
+        res.status(200).json({
+            message: "Login successful.",
+            account
+        });
+    }
+    catch(error){
+    
+        res.status(500).json({
+            message: error.message
+        });
+    }
 }
 
-export function show(req, res)
+export async function show(req, res)
 {
-    res.status(200).json(getA());
+    try
+    {
+        const accounts= await Account.find();
+        res.status(200).json(accounts);
+    }
+    catch(error)
+    {
+        res.status(500).json({
+            message:error.message
+        })
+    }
 }

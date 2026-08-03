@@ -7,7 +7,6 @@ function Login({setLog})
     const [choice,setC]=useState(true);
 
     const [email,setE]=useState("");
-    const [user,setU]=useState("");
     const [pass,setP]=useState("");
     
     const [message,setM]=useState("");//Operation Message
@@ -21,7 +20,7 @@ function Login({setLog})
             {
                 "Content-Type":"application/json"
             },
-            body:JSON.stringify({user,pass})
+            body:JSON.stringify({email,pass})
         })
         const data=await response.json();
         if(response.ok)
@@ -40,13 +39,12 @@ function Login({setLog})
             {
                 "Content-Type":"application/json"
             },
-            body:JSON.stringify({email,user,pass})
+            body:JSON.stringify({email,pass})
         })
         const data=await response.json();
         if(response.ok)
         {
             setE("");
-            setU("");
             setP("");
             setC(true);
         }
@@ -56,7 +54,6 @@ function Login({setLog})
     function switchToLogin() {
         setC(true);
         setE("");
-        setU("");
         setP("");
         setM("");
     }
@@ -64,7 +61,6 @@ function Login({setLog})
     function switchToRegister() {
         setC(false);
         setE("");
-        setU("");
         setP("");
         setM("");
     }
@@ -77,8 +73,8 @@ function Login({setLog})
         <h1>Student Management System</h1>
         <h2>{choice ? "Login" : "Register"}</h2>
             {choice?(<>
-                    <label>Username</label>
-                    <input className="input-field" placeholder="John Doe" type="text" value={user} onChange={(e)=>(setU(e.target.value))}/>
+                    <label>Email</label>
+                    <input className="input-field" placeholder="Enter Email" type="text" value={email} onChange={(e)=>(setE(e.target.value))}/>
                     <label>Password</label>
                     <input className="input-field" placeholder="enter your password" type="password" value={pass} onChange={(e)=>(setP(e.target.value))}/>
                     <button className="primary-btn" onClick={Check1}>Login</button> 
@@ -88,8 +84,6 @@ function Login({setLog})
                     :(<>
                     <label>Email</label>
                     <input className="input-field" placeholder="Enter Email" type="text" value={email} onChange={(e)=>(setE(e.target.value))}/>
-                    <label>Username</label>
-                    <input className="input-field" placeholder="John Doe" type="text" value={user} onChange={(e)=>(setU(e.target.value))}/>
                     <label>Password</label>
                     <input className="input-field" placeholder="enter password" type="password" value={pass} onChange={(e)=>(setP(e.target.value))}/>
                     <button className="primary-btn" onClick={Check2}>Register</button>

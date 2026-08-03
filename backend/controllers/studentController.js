@@ -37,7 +37,8 @@ export async function registerStudent(req, res){
             message:"Student registered successfully.",
             student
         });
-    }   catch(error)
+    }   
+    catch(error)
     {
         res.status(500).json({
             message:error.message
